@@ -1,0 +1,5 @@
+email = "#email"
+password = "#password"
+submit_button = "#submitLoginBtn"
+url = "https://qa-practice.netlify.app/auth_ecommerce.html"
+login_failed_error_msg = "Bad credentials! Please try again! Make sure that you've registered."
