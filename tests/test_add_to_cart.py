@@ -1,37 +1,19 @@
+import time
+
 import pytest
 from playwright.sync_api import expect
-from utils.UtilsHelpers import browser, construct_add_to_cart_button_locator
-from locators.pages.login.login_page import url
+from utils.UtilsHelpers import browser, construct_add_to_cart_button_locator, calculate_total_price
 from super_secure.credentials.login_credentials import correct
-
-test_products = [
-    {
-        "name": "Apple iPhone 12, 128GB, Black",
-        "price": "$905.99"
-    },
-    {
-        "name": "Samsung Galaxy A32, 128GB, White",
-        "price": "$286.99"
-    },
-    {
-        "name": "Apple iPhone 13, 128GB, Blue",
-        "price": "$918.99"
-    },
-    {
-        "name": "Nokia 105, Black",
-        "price": "$19.99"
-    }
-
-]
+from POM.pages.login.login_page import LoginPage
+from POM.pages.home.home_page import HomePage
+from data.test_data import test_products
 
 
 @pytest.mark.parametrize("product", test_products)
-def test_add_to_cart_iphone_12(browser, product):
+def test_add_to_cart_phone(browser, product):
     page = browser.new_page()
-    page.goto(url)
-    page.fill("#email", correct['email'])
-    page.fill("#password", correct['password'])
-    page.click("#submitLoginBtn")
+    login = LoginPage(page)
+    login.login(username=correct['email'], password=correct['password'])
     phone = construct_add_to_cart_button_locator(product["name"])
     page.click(phone)
     expect(page.locator(".cart-item-image")).to_be_visible()
@@ -39,3 +21,15 @@ def test_add_to_cart_iphone_12(browser, product):
     expect(page.locator(".cart-price.cart-column").nth(1)).to_have_text(product["price"])
     expect(page.locator(".cart-quantity-input")).to_have_value("1")
     expect(page.locator(".btn.btn-danger")).to_have_text("REMOVE")
+
+
+def test_add_to_cart_all_phones(browser):
+    page = browser.new_page()
+    login = LoginPage(page)
+    login.login(username=correct['email'], password=correct['password'])
+    formatted_total_price = calculate_total_price(test_products)
+    home = HomePage(page)
+    home.add_all_phones_to_cart(products_list=test_products, product_locator='name')
+    products_total_price = page.locator(".cart-total-price").text_content()
+    assert formatted_total_price == products_total_price
+
