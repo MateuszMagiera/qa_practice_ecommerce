@@ -9,19 +9,19 @@ def test_login_incorrect_email(browser):
     page = browser.new_page()
     login = LoginPage(page)
     login.login(username=incorrect['email'], password=correct['password'])
-    expect(page.locator.get_by_text(incorrect_credentials_error_message)).to_be_visible()
+    expect(page.get_by_text(incorrect_credentials_error_message)).to_be_visible()
 
 
 def test_login_incorrect_password(browser):
     page = browser.new_page()
     login = LoginPage(page)
     login.login(username=incorrect['email'], password=correct['password'])
-    expect(page.locator.get_by_text(incorrect_credentials_error_message)).to_be_visible()
+    expect(page.get_by_text(incorrect_credentials_error_message)).to_be_visible()
 
 
 def test_incorrect_login_and_password(browser):
     page = browser.new_page()
     login = LoginPage(page)
     login.login(username=incorrect['email'], password=incorrect['password'])
-    expect(page.locator.get_by_text(incorrect_credentials_error_message)).to_be_visible()
+    expect(page.get_by_text(incorrect_credentials_error_message)).to_be_visible()
 

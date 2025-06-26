@@ -20,4 +20,4 @@ COPY . .
 ENV PYTHONPATH=/app
 
 # domyślne polecenie (opcjonalnie)
-CMD ["pytest", "-s", "-v", "tests/"]
+CMD ["python","-m","pytest", "-s", "-v", "tests/"]

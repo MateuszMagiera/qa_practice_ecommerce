@@ -8,6 +8,6 @@ class LoginPage:
 
     def login(self,username, password):
         self.page.goto(login_page.url)
-        self.page.fill("#email", correct["email"])
-        self.page.fill("#password", correct["password"])
+        self.page.fill("#email", username)
+        self.page.fill("#password", password)
         self.page.click(login_page.submit_button)
