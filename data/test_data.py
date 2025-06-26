@@ -21,3 +21,5 @@ test_products = [
     }
 
 ]
+
+incorrect_credentials_error_message = "Bad credentials! Please try again! Make sure that you've registered."
