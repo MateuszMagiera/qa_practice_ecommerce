@@ -45,10 +45,10 @@ jobs:
       with:
         name: allure-results
         path: allure-results
+    - name: Install Allure Commandline
+      uses: allure-framework/setup-allurectl@v1
     - name: Generate Allure Report
-      uses: allure-framework/allure-action
-      with:
-        report_path: allure-report
+      run: allurectl report generate --report-dir allure-report allure-results
     - name: Deploy Allure Report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
