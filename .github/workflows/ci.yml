@@ -5,6 +5,11 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  schedule:
+    # Runs at 8:00 AM and 8:00 PM UTC
+    # (which is 10:00 AM and 10:00 PM in Poland during summer time)
+    - cron: '0 8 * * *'
+    - cron: '0 20 * * *'
 
 # Add this section to grant write permissions to the workflow
 permissions:
