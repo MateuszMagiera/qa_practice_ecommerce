@@ -1,15 +1,3 @@
-import pytest
-from playwright.sync_api import sync_playwright
-
-
-@pytest.fixture(scope="function")
-def browser():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        yield browser
-        browser.close()
-
-
 def construct_add_to_cart_button_locator(text):
     locator = f"//span[text()='{text}']//parent::div//div//button[text()='ADD TO CART']"
     return locator
