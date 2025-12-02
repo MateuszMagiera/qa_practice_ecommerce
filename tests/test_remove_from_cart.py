@@ -1,7 +1,4 @@
-import time
-
 from playwright.sync_api import expect
-import pytest
 from POM.pages.login.login_page import LoginPage
 from data.test_data import test_products
 from super_secure.credentials.login_credentials import correct
