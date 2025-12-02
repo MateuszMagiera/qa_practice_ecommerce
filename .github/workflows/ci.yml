@@ -27,7 +27,7 @@ jobs:
         # Add the project root to the Python path to resolve module imports
         PYTHONPATH: .
     - name: Upload Allure results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always() # Upload results even if tests fail
       with:
         name: allure-results
@@ -41,7 +41,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Download Allure results
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: allure-results
         path: allure-results
