@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ main, master ]
 
+# Add this section to grant write permissions to the workflow
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
