@@ -1,1 +1,1 @@
-{"total":11,"items":[{"uid":"4694bff3cec914c560e3e3d80f50deb2","name":"Shopping Cart","statistic":{"failed":0,"broken":0,"skipped":0,"passed":1,"unknown":0,"total":1}}]}
+{"total":12,"items":[{"uid":"29ecce8089d03e70736783e9ef1828f1","name":"API: Employees","statistic":{"failed":0,"broken":2,"skipped":0,"passed":0,"unknown":0,"total":2}},{"uid":"4694bff3cec914c560e3e3d80f50deb2","name":"Shopping Cart","statistic":{"failed":0,"broken":1,"skipped":0,"passed":0,"unknown":0,"total":1}}]}
