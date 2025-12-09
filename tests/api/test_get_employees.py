@@ -1,6 +1,6 @@
 import pytest
-from playwright.sync_api import APIRequestContext, expect
 import allure
+from playwright.sync_api import APIRequestContext, expect
 
 API_BASE_URL = "http://localhost:8887"
 EMPLOYEES_ENDPOINT = "/api/v1/employees"
@@ -67,4 +67,3 @@ class TestGetAPI:
                 assert '-' in item['dob'], f"Expected dob to contain '-', but got {item['dob']}'"
 
         allure.attach(str(response.json()), name="Response Body",attachment_type=allure.attachment_type.TEXT)
-

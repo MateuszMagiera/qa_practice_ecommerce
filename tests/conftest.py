@@ -1,13 +1,5 @@
 import pytest
-from playwright.sync_api import sync_playwright, Playwright, APIRequestContext, Browser
-
-
-@pytest.fixture(scope="function")
-def browser() -> Browser:
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        yield browser
-        browser.close()
+from playwright.sync_api import Playwright, APIRequestContext
 
 @pytest.fixture(scope="session")
 def api_request_context(playwright: Playwright) -> APIRequestContext:
