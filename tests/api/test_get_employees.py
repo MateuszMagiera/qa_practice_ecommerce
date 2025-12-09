@@ -20,10 +20,7 @@ class TestGetAPI:
         with allure.step("Verify the response"):
             expect(response).to_be_ok()
 
-            # Attach headers to the report instead of printing
-            allure.attach(str(response.headers), name="Response Headers", attachment_type=allure.attachment_type.TEXT)
-            # A more robust assertion for the content-type header
-            assert 'application/json' in response.headers['content-type'], "Content-Type header should contain 'application/json'"
+            assert 'application/json' in response.headers['content-type'].lower(), "Content-Type header should contain 'application/json'"
             employees_data = response.json()
 
             assert isinstance(employees_data, list), f"Expected response to be a list, but got {type(employees_data)}"
@@ -35,8 +32,6 @@ class TestGetAPI:
             assert "lastName" in first_employee
             assert "email" in first_employee
 
-            allure.attach(str(employees_data), name="API Response Body", attachment_type=allure.attachment_type.JSON)
-
     @allure.story("Get Employees")
     @allure.title("Test GET /api/v1/employees endpoint with bad request")
     @allure.description("This test verifies that the API returns a proper error code when sending bad request")
@@ -47,8 +42,6 @@ class TestGetAPI:
         with allure.step("Verify the response"):
             # We expect a 405 Method Not Allowed status
             assert response.status == 405, f"Expected status 405, but got {response.status}"
-            allure.attach(str(response.status), name="Response Status")
-            allure.attach(response.text(), name="Response Body", attachment_type=allure.attachment_type.TEXT)
 
 
     @allure.story("Get Employees")
@@ -65,5 +58,3 @@ class TestGetAPI:
                 assert isinstance(item['dob'], str), f"Expected email to be a string, but got {type(item['dob'])}"
                 assert '@' in item['email'], f"Expected email to contain '@', but got {item['email']}'"
                 assert '-' in item['dob'], f"Expected dob to contain '-', but got {item['dob']}'"
-
-        allure.attach(str(response.json()), name="Response Body",attachment_type=allure.attachment_type.TEXT)
