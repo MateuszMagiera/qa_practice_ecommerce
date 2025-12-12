@@ -39,9 +39,10 @@ jobs:
         pip install -r requirements.txt
     - name: Install Playwright browsers
       run: python -m playwright install --with-deps
-    - name: Start API Docker Container
+    - name: Start Service Containers
       run: |
         docker run -d --rm --name qa-practice-api -p8887:8081 rvancea/qa-practice-api:latest
+        docker run -d --rm --name qa-practice-graphql -p5000:5000 rvancea/qa-practice-graphql:latest
         # Give the container a moment to start up
         sleep 5
     - name: Run pytest
