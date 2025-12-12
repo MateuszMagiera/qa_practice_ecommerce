@@ -1,0 +1,1 @@
+{'allow': 'GET, POST', 'content-type': 'application/json;charset=UTF-8', 'transfer-encoding': 'chunked', 'date': 'Fri, 12 Dec 2025 10:57:04 GMT'}
