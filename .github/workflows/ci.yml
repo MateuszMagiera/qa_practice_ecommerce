@@ -51,6 +51,7 @@ jobs:
       env:
         # Add the project root to the Python path to resolve module imports
         PYTHONPATH: .
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     - name: Upload Allure results
       uses: actions/upload-artifact@v4
       if: always() # Upload results even if tests fail
