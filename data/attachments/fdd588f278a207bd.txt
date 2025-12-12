@@ -1,0 +1,1 @@
+{'query': '\n            query GetAllSongs {\n                songs {\n                    id\n                    title\n                    album\n                    author {\n                        name\n                        homeTown\n                    }\n                }\n            }\n        '}
