@@ -1,0 +1,13 @@
+
+            query GetAllSongs {
+                songs {
+                    id
+                    title
+                    album
+                    author {
+                        name
+                        homeTown
+                    }
+                }
+            }
+        

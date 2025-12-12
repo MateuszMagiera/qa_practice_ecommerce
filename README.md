@@ -1,43 +1,43 @@
-﻿# Framework Automatyzacji Testów (UI & API)
+﻿# Test Automation Framework (UI & API)
 
-Jest to zaawansowany framework do automatyzacji testów, stworzony w celu demonstracji umiejętności w zakresie testowania aplikacji webowych (UI) oraz API. Projekt wykorzystuje nowoczesne narzędzia i dobre praktyki, takie jak Page Object Model, CI/CD, konteneryzacja oraz zaawansowane raportowanie.
+This is an advanced test automation framework created to demonstrate skills in testing web applications (UI) and APIs. The project utilizes modern tools and best practices such as the Page Object Model, CI/CD, containerization, and advanced reporting.
 
-Testowana aplikacja: [QA Practice - E-commerce & API](https://qa-practice.netlify.app/)
+Application under test: [QA Practice - E-commerce & API](https://qa-practice.netlify.app/)
 
-**Automatycznie generowany raport z testów jest dostępny tutaj:** [**Link do Raportu Allure**](https://mateuszmagiera.github.io/qa_practice_ecommerce/)
+**An automatically generated test report is available here:** [**Link to Allure Report**](https://mateuszmagiera.github.io/qa_practice_ecommerce/)
 
 ---
 
-## Użyte Technologie
+## Technologies Used
 
-*   **Język:** Python 3.11
-*   **Framework Testowy:** Pytest
-*   **Automatyzacja UI & API:** Playwright
-*   **Raportowanie:** Allure Framework
+*   **Language:** Python 3.11
+*   **Test Framework:** Pytest
+*   **UI & API Automation:** Playwright
+*   **Reporting:** Allure Framework
 *   **CI/CD:** GitHub Actions
-*   **Konteneryzacja:** Docker
+*   **Containerization:** Docker
 
 ---
 
-## Architektura Projektu
+## Project Architecture
 
-Framework został zbudowany w oparciu o sprawdzone wzorce projektowe, aby zapewnić jego skalowalność, czytelność i łatwość w utrzymaniu:
+The framework is built based on proven design patterns to ensure its scalability, readability, and ease of maintenance:
 
-*   **Page Object Model (POM):** Logika interakcji z poszczególnymi stronami aplikacji jest zamknięta w dedykowanych klasach (np. `LoginPage`, `CartPage`), co oddziela ją od logiki testów.
-*   **Separacja Danych:** Dane testowe i wrażliwe (np. dane logowania) są przechowywane w osobnych plikach, co ułatwia zarządzanie i zwiększa bezpieczeństwo.
-*   **Custom Fixtures:** Projekt wykorzystuje niestandardowe fixtury Pytest (np. do automatycznego logowania zapytań API), aby unikać duplikacji kodu i upraszczać testy.
+*   **Page Object Model (POM):** The logic for interacting with individual application pages is encapsulated in dedicated classes (e.g., `LoginPage`, `CartPage`), which separates it from the test logic.
+*   **Data Separation:** Test data and sensitive information (e.g., login credentials) are stored in separate files, which facilitates management and increases security.
+*   **Custom Fixtures:** The project uses custom Pytest fixtures (e.g., for automatically logging API requests) to avoid code duplication and simplify tests.
 
 ---
 
-## Instalacja i Konfiguracja
+## Installation and Configuration
 
-1.  **Sklonuj repozytorium:**
+1.  **Clone the repository:**
     ```sh
     git clone https://github.com/MateuszMagiera/qa_practice_ecommerce.git
     cd qa_practice_ecommerce
     ```
 
-2.  **Stwórz i aktywuj środowisko wirtualne (zalecane):**
+2.  **Create and activate a virtual environment (recommended):**
     ```sh
     python -m venv venv
     # Windows
@@ -46,96 +46,96 @@ Framework został zbudowany w oparciu o sprawdzone wzorce projektowe, aby zapewn
     source venv/bin/activate
     ```
 
-3.  **Zainstaluj zależności:**
+3.  **Install dependencies:**
     ```sh
     pip install -r requirements.txt
     ```
 
-4.  **Zainstaluj przeglądarki dla Playwright:**
+4.  **Install browsers for Playwright:**
     ```sh
     playwright install --with-deps
     ```
 
 ---
 
-## Uruchamianie Testów Lokalnie
+## Running Tests Locally
 
-### 1. Uruchomienie serwera API (wymagane dla testów API)
+### 1. Run the API server (required for API tests)
 
-Testy API wymagają uruchomienia lokalnego serwera API w kontenerze Docker.
+API tests require running a local API server in a Docker container.
 
 ```sh
 docker run -d --rm --name qa-practice-api -p8887:8081 rvancea/qa-practice-api:latest
 ```
 
-> **Uwaga:** Jeśli kontener o tej nazwie już istnieje, zatrzymaj go komendą `docker stop qa-practice-api` przed ponownym uruchomieniem.
+> **Note:** If a container with this name already exists, stop it with the command `docker stop qa-practice-api` before restarting it.
 
-### 2. Uruchomienie testów Pytest
+### 2. Run Pytest tests
 
-*   **Uruchomienie wszystkich testów (UI i API):**
+*   **Run all tests (UI and API):**
     ```sh
     pytest
     ```
 
-*   **Uruchomienie tylko testów UI:**
+*   **Run only UI tests:**
     ```sh
     pytest tests/ui/
     ```
 
-*   **Uruchomienie tylko testów API:**
+*   **Run only API tests:**
     ```sh
     pytest tests/api/
     ```
 
 ---
 
-## Raportowanie z Allure
+## Reporting with Allure
 
-### 1. Uruchomienie testów z kolekcjonowaniem wyników
+### 1. Run tests with results collection
 
 ```sh
 pytest --alluredir=allure-results
 ```
 
-### 2. Generowanie i przeglądanie raportu
+### 2. Generate and view the report
 
-*   **Opcja A: Szybki podgląd (serwer tymczasowy)**
+*   **Option A: Quick preview (temporary server)**
     ```sh
     allure serve allure-results
     ```
 
-*   **Opcja B: Serwer stały (zalecane do pracy lokalnej)**
-    1.  W jednym terminalu uruchom serwer HTTP, który będzie hostował raport:
+*   **Option B: Persistent server (recommended for local work)**
+    1.  In one terminal, run an HTTP server that will host the report:
         ```sh
         python -m http.server 8000 --directory allure-report
         ```
-    2.  Po każdym uruchomieniu testów, w drugim terminalu wygeneruj raport, nadpisując starą wersję:
+    2.  After each test run, in a second terminal, generate the report, overwriting the old version:
         ```sh
         allure generate allure-results --clean -o allure-report
         ```
-    3.  Otwórz raport w przeglądarce pod adresem `http://localhost:8000`. Po prostu odśwież stronę, aby zobaczyć nowe wyniki.
+    3.  Open the report in your browser at `http://localhost:8000`. Simply refresh the page to see the new results.
 
 ---
 
-## Uruchamianie Testów z użyciem Dockera
+## Running Tests with Docker
 
-1.  **Zbuduj obraz Docker:**
+1.  **Build the Docker image:**
     ```sh
     docker build -t playwright-tests .
     ```
 
-2.  **Uruchom testy w kontenerze:**
+2.  **Run tests in the container:**
     ```sh
     docker run --rm -it playwright-tests
     ```
-    > **Uwaga:** Aby testy API działały wewnątrz kontenera, musi on mieć dostęp do serwera API. Wymaga to zaawansowanej konfiguracji sieci Docker (np. `docker-compose`).
+    > **Note:** For API tests to work inside the container, it must have access to the API server. This requires advanced Docker network configuration (e.g., `docker-compose`).
 
 ---
 
-## Integracja z CI/CD (GitHub Actions)
+## CI/CD Integration (GitHub Actions)
 
-Projekt jest w pełni zintegrowany z GitHub Actions. Workflow jest uruchamiany:
-*   Po każdym `push` i `pull_request` do gałęzi `main` lub `master`.
-*   Automatycznie dwa razy dziennie (o 8:00 i 20:00 UTC) w ramach symulacji testów regresji.
+The project is fully integrated with GitHub Actions. The workflow is triggered:
+*   On every `push` and `pull_request` to the `main` or `master` branch.
+*   Automatically twice a day (at 8:00 and 20:00 UTC) as a simulation of regression tests.
 
-Po każdym uruchomieniu, raport Allure jest automatycznie generowany i publikowany na GitHub Pages.
+After each run, the Allure report is automatically generated and published to GitHub Pages.
