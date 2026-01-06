@@ -23,3 +23,5 @@ test_products = [
 ]
 
 incorrect_credentials_error_message = "Bad credentials! Please try again! Make sure that you've registered."
+
+internal_server_error_message = "Internal Server Error"
