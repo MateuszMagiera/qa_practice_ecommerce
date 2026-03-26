@@ -3,7 +3,18 @@ load_dotenv()
 
 import pytest
 import allure
-from playwright.sync_api import Playwright, APIRequestContext, Browser, Response, APIResponse
+from playwright.sync_api import Playwright, APIRequestContext, Response, APIResponse
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """
+    Makes the test outcome (pass/fail/error) available to fixtures via
+    request.node.rep_call, so they can react to test failure.
+    """
+    outcome = yield
+    rep = outcome.get_result()
+    setattr(item, f"rep_{rep.when}", rep)
 
 @pytest.fixture(scope="session")
 def api_request_context(playwright: Playwright) -> 'AllureLoggingAPIRequestContext':

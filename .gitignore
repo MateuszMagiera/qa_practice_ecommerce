@@ -23,8 +23,11 @@ env/
 # Test artifacts (auto-generated)
 allure-results/
 allure-report/
+screenshots/
 
 # OS files
 Thumbs.db
 .DS_Store
 
+#ideas for future additions:
+ideas/
