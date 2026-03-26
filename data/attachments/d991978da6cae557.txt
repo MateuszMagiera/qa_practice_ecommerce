@@ -1,0 +1,1 @@
+{'content-type': 'application/json;charset=UTF-8', 'transfer-encoding': 'chunked', 'date': 'Thu, 04 Dec 2025 11:25:26 GMT'}
