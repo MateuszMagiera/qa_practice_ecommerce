@@ -1,8 +1,7 @@
 import pytest
 import allure
 from playwright.sync_api import APIRequestContext, expect
-
-API_BASE_URL = "http://localhost:8887"
+from config import API_BASE_URL
 EMPLOYEES_ENDPOINT = "/api/v1/employees"
 
 @allure.feature("API: Employees")

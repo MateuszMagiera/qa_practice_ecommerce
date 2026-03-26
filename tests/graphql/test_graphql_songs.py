@@ -1,8 +1,7 @@
 import allure
 import pytest
 from playwright.sync_api import APIRequestContext, expect
-
-GRAPHQL_URL = "http://localhost:5000/graphql"
+from config import GRAPHQL_URL
 
 @allure.feature("GraphQL API")
 class TestGraphQLSongs:
