@@ -3,10 +3,6 @@ def construct_add_to_cart_button_locator(text):
     return locator
 
 
-def construct_remove_from_cart_button_locator(text):
-    locator = f"//span[text()='{text}']//parent::div//parent::div/div[contains(@class, 'cart-quantity cart-column')]//button[text() = 'REMOVE']"
-    return locator
-
 
 def calculate_total_price(products):
     product_prices = [product['price'] for product in products]
