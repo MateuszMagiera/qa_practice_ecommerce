@@ -21,15 +21,16 @@ class TestStep:
             print(f"[SUCCESS] : {self.step_name}")
 
 
-print("--- Scenario 1: Success ---")
-with TestStep("Logging into the system"):
-    print("  -> Entering login credentials...")
-    print("  -> Clicking enter...")
+if __name__ == "__main__":
+    print("--- Scenario 1: Success ---")
+    with TestStep("Logging into the system"):
+        print("  -> Entering login credentials...")
+        print("  -> Clicking enter...")
 
-print("\n--- Scenario 2: Error ---")
-try:
-    with TestStep("Credit card payment"):
-        print("  -> Entering card number...")
-        raise ValueError("Insufficient funds!")
-except ValueError:
-    print("-> Error caught in the main test block (as expected).")
+    print("\n--- Scenario 2: Error ---")
+    try:
+        with TestStep("Credit card payment"):
+            print("  -> Entering card number...")
+            raise ValueError("Insufficient funds!")
+    except ValueError:
+        print("-> Error caught in the main test block (as expected).")
