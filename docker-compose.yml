@@ -1,0 +1,47 @@
+services:
+  # --- Backend services (API under test) ---
+  api:
+    image: rvancea/qa-practice-api:latest
+    ports:
+      - "8887:8081"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8081/api/v1/employees || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 10s
+
+  graphql:
+    image: rvancea/qa-practice-graphql:latest
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:5000/graphql || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 10s
+
+  # --- Test runner (runs all tests, then exits) ---
+  tests:
+    build: .
+    depends_on:
+      api:
+        condition: service_healthy
+      graphql:
+        condition: service_healthy
+    environment:
+      # URLs point to the Docker service names (resolved via internal DNS)
+      - BASE_URL=https://qa-practice.netlify.app
+      - API_BASE_URL=http://api:8081
+      - GRAPHQL_URL=http://graphql:5000/graphql
+      # Test credentials (override in .env or CI secrets)
+      - CORRECT_EMAIL=${CORRECT_EMAIL:-admin@admin.com}
+      - CORRECT_PASSWORD=${CORRECT_PASSWORD:-admin123}
+      - INCORRECT_EMAIL=${INCORRECT_EMAIL:-wrong@email.com}
+      - INCORRECT_PASSWORD=${INCORRECT_PASSWORD:-!nC0r3cTT?}
+    volumes:
+      - ./allure-results:/app/allure-results
+      - ./screenshots:/app/screenshots
+    command: ["python", "-m", "pytest", "-s", "-v", "tests/", "--alluredir=allure-results"]
+
