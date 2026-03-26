@@ -1,0 +1,73 @@
+name: "🚬 Smoke Tests"
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  smoke:
+    name: Smoke Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    services:
+      api:
+        image: rvancea/qa-practice-api:latest
+        ports:
+          - 8887:8081
+        options: >-
+          --health-cmd "wget -q --spider http://localhost:8081/api/v1/employees || exit 1"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 15
+          --health-start-period 10s
+
+      graphql:
+        image: rvancea/qa-practice-graphql:latest
+        ports:
+          - 5000:5000
+        options: >-
+          --health-cmd "wget -q --spider http://localhost:5000/graphql || exit 1"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 15
+          --health-start-period 10s
+
+    env:
+      BASE_URL: https://qa-practice.netlify.app
+      API_BASE_URL: http://localhost:8887
+      GRAPHQL_URL: http://localhost:5000/graphql
+      CORRECT_EMAIL: ${{ secrets.CORRECT_EMAIL }}
+      CORRECT_PASSWORD: ${{ secrets.CORRECT_PASSWORD }}
+      INCORRECT_EMAIL: ${{ secrets.INCORRECT_EMAIL }}
+      INCORRECT_PASSWORD: ${{ secrets.INCORRECT_PASSWORD }}
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: 📦 Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: 🎭 Install Playwright browsers
+        run: playwright install --with-deps chromium
+
+      - name: 🚬 Run Smoke Tests
+        run: pytest -m smoke -v --alluredir=allure-results
+
+      - name: 📊 Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-allure-results
+          path: allure-results/
+          retention-days: 30
+

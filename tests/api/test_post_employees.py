@@ -4,6 +4,7 @@ from playwright.sync_api import APIRequestContext, expect
 from config import API_BASE_URL
 EMPLOYEES_ENDPOINT = "/api/v1/employees"
 
+@pytest.mark.regression
 @allure.feature("API: Employees POST")
 class TestPostEmployees:
     @allure.story("Create Employees")

@@ -6,6 +6,7 @@ from data.test_data import incorrect_credentials_error_message
 from super_secure.credentials.login_credentials import correct, incorrect
 
 
+@pytest.mark.regression
 @allure.title("E-commerce: Login with Invalid Credentials")
 @allure.description("This test verifies that an error message is displayed for various incorrect login combinations.")
 @allure.feature("Authentication")

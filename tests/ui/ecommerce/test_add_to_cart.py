@@ -8,6 +8,8 @@ from POM.pages.cart.cart_page import CartPage
 from data.test_data import test_products
 
 
+@pytest.mark.smoke
+@pytest.mark.regression
 @allure.title("E-commerce: Add Single Product to Cart")
 @allure.description("This test verifies that a single product can be added to the cart and its details are correct.")
 @allure.feature("Shopping Cart")
@@ -31,6 +33,7 @@ def test_add_to_cart_phone(browser, product):
         cart_page.expect_product_is_in_cart(product_name=product["name"], price=product["price"])
 
 
+@pytest.mark.regression
 @allure.title("E-commerce: Add All Products to Cart")
 @allure.description("This test verifies that all products can be added to the cart and the total price is calculated correctly.")
 @allure.feature("Shopping Cart")

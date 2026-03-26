@@ -1,9 +1,12 @@
+import pytest
 import allure
 from playwright.sync_api import expect
 from super_secure.credentials.login_credentials import correct
 from POM.pages.login.login_page import LoginPage
 
 
+@pytest.mark.smoke
+@pytest.mark.regression
 @allure.title("E-commerce: Successful Login")
 @allure.description("This test verifies that a user can log in with valid credentials and is redirected to the shopping page.")
 @allure.feature("Authentication")

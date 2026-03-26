@@ -3,8 +3,10 @@ import pytest
 from playwright.sync_api import APIRequestContext, expect
 from config import GRAPHQL_URL
 
+@pytest.mark.regression
 @allure.feature("GraphQL API")
 class TestGraphQLSongs:
+    @pytest.mark.smoke
     @allure.story("Query Songs")
     @allure.title("Test getting all songs")
     @allure.description("This test verifies that the list of all songs can be correctly retrieved via GraphQL.")

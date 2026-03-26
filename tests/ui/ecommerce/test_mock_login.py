@@ -1,3 +1,4 @@
+import pytest
 import allure
 from playwright.sync_api import Page, expect
 from POM.pages.login.login_page import LoginPage
@@ -16,6 +17,7 @@ function checkCredentialsProductsList() {
 """
 
 
+@pytest.mark.regression
 @allure.feature("UI Mocking")
 class TestLoginMock:
 

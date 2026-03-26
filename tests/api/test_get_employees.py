@@ -6,6 +6,8 @@ EMPLOYEES_ENDPOINT = "/api/v1/employees"
 
 @allure.feature("API: Employees")
 class TestGetAPI:
+    @pytest.mark.smoke
+    @pytest.mark.regression
     @allure.story("Get All Employees")
     @allure.title("Test GET /api/v1/employees endpoint")
     @allure.description("This test verifies that the API returns a list of all employees successfully.")
@@ -31,6 +33,7 @@ class TestGetAPI:
             assert "lastName" in first_employee
             assert "email" in first_employee
 
+    @pytest.mark.regression
     @allure.story("Get Employees")
     @allure.title("Test GET /api/v1/employees endpoint with bad request")
     @allure.description("This test verifies that the API returns a proper error code when sending bad request")
@@ -43,6 +46,7 @@ class TestGetAPI:
             assert response.status == 405, f"Expected status 405, but got {response.status}"
 
 
+    @pytest.mark.regression
     @allure.story("Get Employees")
     @allure.title("Test GET /api/v1/employees endpoint id")
     @allure.description("This test verifies if items returned as the response are of correct types")
