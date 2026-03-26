@@ -1,8 +1,11 @@
+import os
+
 correct = {
-    "email": "admin@admin.com",
-    "password": "admin123"
+    "email": os.environ["CORRECT_EMAIL"],
+    "password": os.environ["CORRECT_PASSWORD"],
 }
+
 incorrect = {
-    "email": "wrong@email.com",
-    "password": "!nC0r3cTT?"
+    "email": os.environ["INCORRECT_EMAIL"],
+    "password": os.environ["INCORRECT_PASSWORD"],
 }

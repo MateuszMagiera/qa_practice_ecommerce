@@ -1,4 +1,3 @@
-from super_secure.credentials.login_credentials import correct, incorrect
 from locators.pages.login import login_page
 
 

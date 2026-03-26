@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import pytest
 import allure
 from playwright.sync_api import Playwright, APIRequestContext, Browser, Response, APIResponse

@@ -29,6 +29,6 @@ def test_add_to_cart_all_phones(browser):
 
     login_page.login(username=correct['email'], password=correct['password'])
     formatted_total_price = calculate_total_price(test_products)
-    home_page.add_all_phones_to_cart(products_list=test_products, product_locator='name') # Ta metoda została już zaktualizowana w HomePage
+    home_page.add_all_phones_to_cart(products_list=test_products, product_locator='name') # This method has already been updated in HomePage
     products_total_price = page.locator(".cart-total-price").text_content()
     assert formatted_total_price == products_total_price

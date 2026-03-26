@@ -1,0 +1,30 @@
+# Environment variables (secrets)
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Test artifacts (auto-generated)
+allure-results/
+allure-report/
+
+# OS files
+Thumbs.db
+.DS_Store
+

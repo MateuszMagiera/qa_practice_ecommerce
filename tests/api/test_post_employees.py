@@ -36,6 +36,7 @@ class TestPostEmployees:
             # Send a GET request to verify the employee list contains the new employee
             get_response = api_request_context.get(f"{API_BASE_URL}{EMPLOYEES_ENDPOINT}")
             expect(get_response).to_be_ok()
+
             employees_list = get_response.json()
             # Check if any employee in the list matches the one we created
             assert any(emp['firstName'] == new_employee_data['firstName'] and emp['lastName'] == new_employee_data['lastName'] for emp in employees_list), \
