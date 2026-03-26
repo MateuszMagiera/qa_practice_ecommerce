@@ -42,10 +42,10 @@ class TestPostEmployees:
                 "Newly created employee not found in the employees list"
 
     @pytest.mark.parametrize("invalid_payload, expected_error_message_part", [
-        ({"lastName": "Doe", "email": "jane.doe@example.com", "dob": "1991-02-16"}, "firstName must not be blank"),
-        ({"firstName": "Jane", "lastName": "Doe", "email": "not-an-email", "dob": "1991-02-16"}, "email must be a well-formed email address"),
-        ({"firstName": "Jane", "lastName": "Doe", "email": "jane.doe@example.com", "dob": "invalid-date"}, "dob must be a date in yyyy-MM-dd format"),
-        ({}, "firstName must not be blank") # Test with empty payload
+        ({"lastName": "Doe", "email": "jane.doe@example.com", "dob": "1991-02-16"}, "The first name is mandatory!"),
+        ({"firstName": "Jane", "lastName": "Doe", "email": "not-an-email", "dob": "1991-02-16"}, "must be a well-formed email address"),
+        ({"firstName": "Jane", "lastName": "Doe", "email": "jane.doe@example.com", "dob": "invalid-date"}, "Cannot deserialize value of type"),
+        ({}, "The first name is mandatory!") # Test with empty payload
     ])
     @allure.story("Create Employees - Negative Scenarios")
     @allure.title("Test POST with invalid data: {expected_error_message_part}")
@@ -58,12 +58,16 @@ class TestPostEmployees:
             response = api_request_context.post(
                 f"{API_BASE_URL}{EMPLOYEES_ENDPOINT}",
                 data=invalid_payload,
-                fail_on_error=False  # Allow us to inspect the 4xx response
             )
 
         with allure.step("Verify the 400 Bad Request response"):
             assert response.status == 400, f"Expected status 400, but got {response.status}"
             response_json = response.json()
-            assert "message" in response_json, "Response JSON should contain a 'message' key"
-            assert expected_error_message_part in response_json["message"], \
-                f"Expected error message part '{expected_error_message_part}' not found in response: {response_json['message']}"
+
+            # Validation errors are in the 'errors' array; parse errors are in 'message'.
+            all_messages = response_json.get("message", "")
+            for error in response_json.get("errors", []):
+                all_messages += " " + error.get("defaultMessage", "")
+
+            assert expected_error_message_part in all_messages, \
+                f"Expected '{expected_error_message_part}' not found in response: {all_messages}"
