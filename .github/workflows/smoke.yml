@@ -8,9 +8,13 @@ on:
 
 jobs:
   smoke:
-    name: Smoke Tests
+    name: Smoke Tests (${{ matrix.browser }})
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
 
     services:
       api:
@@ -58,16 +62,16 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: 🎭 Install Playwright browsers
-        run: playwright install --with-deps chromium
+        run: playwright install --with-deps ${{ matrix.browser }}
 
-      - name: 🚬 Run Smoke Tests
-        run: pytest -m smoke -v --alluredir=allure-results
+      - name: 🚬 Run Smoke Tests (${{ matrix.browser }})
+        run: pytest -m smoke -v --browser ${{ matrix.browser }} --alluredir=allure-results
 
       - name: 📊 Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: smoke-allure-results
+          name: smoke-allure-results-${{ matrix.browser }}
           path: allure-results/
           retention-days: 30
 

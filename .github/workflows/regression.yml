@@ -8,9 +8,13 @@ on:
 
 jobs:
   regression:
-    name: Full Regression Suite
+    name: Full Regression Suite (${{ matrix.browser }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
 
     services:
       api:
@@ -58,16 +62,16 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: 🎭 Install Playwright browsers
-        run: playwright install --with-deps chromium
+        run: playwright install --with-deps ${{ matrix.browser }}
 
-      - name: 🔄 Run Full Regression Suite
-        run: pytest -m regression -v --alluredir=allure-results
+      - name: 🔄 Run Full Regression Suite (${{ matrix.browser }})
+        run: pytest -m regression -v --browser ${{ matrix.browser }} --alluredir=allure-results
 
       - name: 📊 Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: regression-allure-results
+          name: regression-allure-results-${{ matrix.browser }}
           path: allure-results/
           retention-days: 30
 
@@ -75,7 +79,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: regression-failure-screenshots
+          name: regression-failure-screenshots-${{ matrix.browser }}
           path: screenshots/
           retention-days: 30
 

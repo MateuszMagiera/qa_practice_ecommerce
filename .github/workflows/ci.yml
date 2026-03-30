@@ -20,6 +20,11 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    name: Tests (${{ matrix.browser }})
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
@@ -38,7 +43,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Install Playwright browsers
-      run: python -m playwright install --with-deps
+      run: python -m playwright install --with-deps ${{ matrix.browser }}
     - name: Start Service Containers
       run: |
         docker run -d --rm --name qa-practice-api -p8887:8081 rvancea/qa-practice-api:latest
@@ -47,7 +52,7 @@ jobs:
         sleep 5
     - name: Run pytest
       # Run tests and collect Allure results (UI and API tests)
-      run: pytest --alluredir=allure-results
+      run: pytest --browser ${{ matrix.browser }} --alluredir=allure-results
       env:
         # Add the project root to the Python path to resolve module imports
         PYTHONPATH: .
@@ -60,7 +65,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always() # Upload results even if tests fail
       with:
-        name: allure-results
+        name: allure-results-${{ matrix.browser }}
         path: allure-results
 
   # Separate job for report generation and deployment
@@ -70,11 +75,12 @@ jobs:
     if: always() # Run even if 'test' job failed, to generate report for failures
     steps:
     - uses: actions/checkout@v4
-    - name: Download Allure results
+    - name: Download Allure results (all browsers)
       uses: actions/download-artifact@v4
       with:
-        name: allure-results
+        pattern: allure-results-*
         path: allure-results
+        merge-multiple: true
     - name: Install Allure Commandline (for report generation)
       run: |
         sudo npm install -g allure-commandline
