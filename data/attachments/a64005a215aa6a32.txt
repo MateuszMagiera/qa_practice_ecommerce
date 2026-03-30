@@ -1,6 +1,0 @@
-Accessibility audit: Login Page
-==================================================
-  ✅ Passed rules:     20
-  ❌ Violations:       3
-  ⚠️  Incomplete:      0
-  📋 WCAG tags tested: wcag2a, wcag2aa, wcag21a, wcag21aa
