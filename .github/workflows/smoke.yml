@@ -65,7 +65,7 @@ jobs:
         run: playwright install --with-deps ${{ matrix.browser }}
 
       - name: 🚬 Run Smoke Tests (${{ matrix.browser }})
-        run: pytest -m smoke -v --browser ${{ matrix.browser }} --alluredir=allure-results
+        run: pytest -m smoke -v --browser ${{ matrix.browser }} -n auto --alluredir=allure-results
 
       - name: 📊 Upload Allure results
         if: always()

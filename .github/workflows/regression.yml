@@ -65,7 +65,7 @@ jobs:
         run: playwright install --with-deps ${{ matrix.browser }}
 
       - name: 🔄 Run Full Regression Suite (${{ matrix.browser }})
-        run: pytest -m regression -v --browser ${{ matrix.browser }} --alluredir=allure-results
+        run: pytest -m regression -v --browser ${{ matrix.browser }} -n auto --alluredir=allure-results
 
       - name: 📊 Upload Allure results
         if: always()
