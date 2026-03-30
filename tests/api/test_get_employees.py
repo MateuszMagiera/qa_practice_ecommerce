@@ -2,6 +2,7 @@ import pytest
 import allure
 from playwright.sync_api import APIRequestContext, expect
 from config import API_BASE_URL
+from utils.schema_validator import assert_valid_schema
 EMPLOYEES_ENDPOINT = "/api/v1/employees"
 
 @allure.feature("API: Employees")
@@ -61,3 +62,21 @@ class TestGetAPI:
                 assert isinstance(item['dob'], str), f"Expected email to be a string, but got {type(item['dob'])}"
                 assert '@' in item['email'], f"Expected email to contain '@', but got {item['email']}'"
                 assert '-' in item['dob'], f"Expected dob to contain '-', but got {item['dob']}'"
+
+    @pytest.mark.regression
+    @allure.story("Contract Testing")
+    @allure.title("Validate GET /api/v1/employees response against JSON Schema")
+    @allure.description(
+        "Validates the entire API response against a JSON Schema contract. "
+        "Checks field presence, types, formats (email, date), and rejects unexpected fields."
+    )
+    def test_get_employees_schema(self, api_request_context: APIRequestContext):
+        """Contract test — validates response structure via JSON Schema."""
+        with allure.step(f"Send GET request to {EMPLOYEES_ENDPOINT}"):
+            response = api_request_context.get(f"{API_BASE_URL}{EMPLOYEES_ENDPOINT}")
+
+        with allure.step("Verify response is OK"):
+            expect(response).to_be_ok()
+
+        assert_valid_schema(response.json(), "employee_list.json")
+
