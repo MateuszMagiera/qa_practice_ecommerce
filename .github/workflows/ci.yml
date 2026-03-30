@@ -43,7 +43,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Install Playwright browsers
-      run: python -m playwright install --with-deps ${{ matrix.browser }}
+      run: python -m playwright install --with-deps
     - name: Start Service Containers
       run: |
         docker run -d --rm --name qa-practice-api -p8887:8081 rvancea/qa-practice-api:latest
