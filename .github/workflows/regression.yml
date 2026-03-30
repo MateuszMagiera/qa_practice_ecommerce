@@ -16,29 +16,6 @@ jobs:
       matrix:
         browser: [chromium, firefox, webkit]
 
-    services:
-      api:
-        image: rvancea/qa-practice-api:latest
-        ports:
-          - 8887:8081
-        options: >-
-          --health-cmd "wget -q --spider http://localhost:8081/api/v1/employees || exit 1"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 15
-          --health-start-period 10s
-
-      graphql:
-        image: rvancea/qa-practice-graphql:latest
-        ports:
-          - 5000:5000
-        options: >-
-          --health-cmd "wget -q --spider http://localhost:5000/graphql || exit 1"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 15
-          --health-start-period 10s
-
     env:
       BASE_URL: https://qa-practice.netlify.app
       API_BASE_URL: http://localhost:8887
@@ -64,6 +41,12 @@ jobs:
       - name: 🎭 Install Playwright browsers
         run: playwright install --with-deps ${{ matrix.browser }}
 
+      - name: 🐳 Start Service Containers
+        run: |
+          docker run -d --rm --name qa-practice-api -p8887:8081 rvancea/qa-practice-api:latest
+          docker run -d --rm --name qa-practice-graphql -p5000:5000 rvancea/qa-practice-graphql:latest
+          sleep 5
+
       - name: 🔄 Run Full Regression Suite (${{ matrix.browser }})
         run: pytest -m regression -v --browser ${{ matrix.browser }} -n auto --alluredir=allure-results
 
@@ -82,5 +65,3 @@ jobs:
           name: regression-failure-screenshots-${{ matrix.browser }}
           path: screenshots/
           retention-days: 30
-
-
