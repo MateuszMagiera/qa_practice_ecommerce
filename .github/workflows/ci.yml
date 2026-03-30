@@ -52,7 +52,7 @@ jobs:
         sleep 5
     - name: Run pytest
       # Run tests and collect Allure results (UI and API tests)
-      run: pytest --browser ${{ matrix.browser }} -n auto --alluredir=allure-results
+      run: pytest --browser ${{ matrix.browser }} -n 2 --alluredir=allure-results
       env:
         # Add the project root to the Python path to resolve module imports
         PYTHONPATH: .

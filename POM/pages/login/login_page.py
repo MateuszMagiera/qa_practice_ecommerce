@@ -10,3 +10,4 @@ class LoginPage:
         self.page.fill(login_page.email, username)
         self.page.fill(login_page.password, password)
         self.page.click(login_page.submit_button)
+        self.page.wait_for_load_state("networkidle")

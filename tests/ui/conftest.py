@@ -6,6 +6,43 @@ import allure
 
 SCREENSHOTS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "screenshots")
 
+# Timeouts (ms) — generous enough for slow CI runners hitting an external site.
+DEFAULT_TIMEOUT = 60_000
+DEFAULT_NAVIGATION_TIMEOUT = 60_000
+DEFAULT_VIEWPORT = {"width": 1920, "height": 1080}
+
+
+@pytest.fixture()
+def browser(browser):
+    """
+    Wraps the default pytest-playwright browser fixture to ensure every
+    page/context created via browser.new_page() or browser.new_context()
+    gets consistent viewport and timeout defaults.
+
+    This is critical for CI where headless browsers default to 1280×720
+    and the external sites can be slow to respond.
+    """
+    _original_new_page = browser.new_page
+    _original_new_context = browser.new_context
+
+    def _new_page_with_defaults(**kwargs):
+        kwargs.setdefault("viewport", DEFAULT_VIEWPORT)
+        page = _original_new_page(**kwargs)
+        page.set_default_timeout(DEFAULT_TIMEOUT)
+        page.set_default_navigation_timeout(DEFAULT_NAVIGATION_TIMEOUT)
+        return page
+
+    def _new_context_with_defaults(**kwargs):
+        kwargs.setdefault("viewport", DEFAULT_VIEWPORT)
+        ctx = _original_new_context(**kwargs)
+        ctx.set_default_timeout(DEFAULT_TIMEOUT)
+        ctx.set_default_navigation_timeout(DEFAULT_NAVIGATION_TIMEOUT)
+        return ctx
+
+    browser.new_page = _new_page_with_defaults
+    browser.new_context = _new_context_with_defaults
+    return browser
+
 
 @pytest.fixture(autouse=True)
 def capture_screenshot_on_failure(request, browser):
