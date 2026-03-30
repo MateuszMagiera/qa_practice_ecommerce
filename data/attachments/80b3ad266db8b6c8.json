@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Employee List",
+  "description": "Schema for the full GET /api/v1/employees response \u2014 an array of employees",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "$ref": "employee.json"
+  }
+}
