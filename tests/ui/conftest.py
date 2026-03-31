@@ -3,13 +3,20 @@ from datetime import datetime
 
 import pytest
 import allure
+from playwright.sync_api import expect
 
 SCREENSHOTS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "screenshots")
 
 # Timeouts (ms) — generous enough for slow CI runners hitting an external site.
 DEFAULT_TIMEOUT = 60_000
 DEFAULT_NAVIGATION_TIMEOUT = 60_000
+DEFAULT_EXPECT_TIMEOUT = 30_000
 DEFAULT_VIEWPORT = {"width": 1920, "height": 1080}
+
+# Increase Playwright's expect() assertion timeout (default is 5s).
+# In CI, the external Netlify site renders slowly — 5s is not enough
+# for elements to become visible after page transitions.
+expect.set_options(timeout=DEFAULT_EXPECT_TIMEOUT)
 
 
 @pytest.fixture()
