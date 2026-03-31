@@ -1,11 +1,12 @@
-import pytest
 import allure
-from utils.UtilsHelpers import calculate_total_price
-from super_secure.credentials.login_credentials import correct
-from POM.pages.login.login_page import LoginPage
-from POM.pages.home.home_page import HomePage
-from POM.pages.cart.cart_page import CartPage
+import pytest
+
 from data.test_data import test_products
+from POM.pages.cart.cart_page import CartPage
+from POM.pages.home.home_page import HomePage
+from POM.pages.login.login_page import LoginPage
+from super_secure.credentials.login_credentials import correct
+from utils.UtilsHelpers import calculate_total_price
 
 
 @pytest.mark.smoke
@@ -24,7 +25,7 @@ def test_add_to_cart_phone(browser, product):
         cart_page = CartPage(page)
 
     with allure.step(f"Log in as user: {correct['email']}"):
-        login_page.login(username=correct['email'], password=correct['password'])
+        login_page.login(username=correct["email"], password=correct["password"])
 
     with allure.step(f"Add product '{product['name']}' to the cart"):
         home_page.add_product_to_cart(product["name"])
@@ -35,7 +36,9 @@ def test_add_to_cart_phone(browser, product):
 
 @pytest.mark.regression
 @allure.title("E-commerce: Add All Products to Cart")
-@allure.description("This test verifies that all products can be added to the cart and the total price is calculated correctly.")
+@allure.description(
+    "This test verifies that all products can be added to the cart and the total price is calculated correctly."
+)
 @allure.feature("Shopping Cart")
 @allure.story("As a logged-in user, I can add all products to my cart")
 def test_add_to_cart_all_phones(browser):
@@ -46,15 +49,16 @@ def test_add_to_cart_all_phones(browser):
         home_page = HomePage(page)
 
     with allure.step(f"Log in as user: {correct['email']}"):
-        login_page.login(username=correct['email'], password=correct['password'])
+        login_page.login(username=correct["email"], password=correct["password"])
 
     with allure.step("Calculate expected total price"):
         formatted_total_price = calculate_total_price(test_products)
 
     with allure.step("Add all products to the cart"):
-        home_page.add_all_phones_to_cart(products_list=test_products, product_locator='name')
+        home_page.add_all_phones_to_cart(products_list=test_products, product_locator="name")
 
     with allure.step(f"Verify total price equals {formatted_total_price}"):
         products_total_price = page.locator(".cart-total-price").text_content()
-        assert formatted_total_price == products_total_price, \
+        assert formatted_total_price == products_total_price, (
             f"Expected total price '{formatted_total_price}', but got '{products_total_price}'"
+        )

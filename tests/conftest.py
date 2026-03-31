@@ -1,9 +1,15 @@
 from dotenv import load_dotenv
+
 load_dotenv()
 
-import pytest
-import allure
-from playwright.sync_api import Playwright, APIRequestContext, Response, APIResponse
+import allure  # noqa: E402
+import pytest  # noqa: E402
+from playwright.sync_api import (  # noqa: E402
+    APIRequestContext,
+    APIResponse,
+    Playwright,
+    Response,
+)
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -16,8 +22,9 @@ def pytest_runtest_makereport(item, call):
     rep = outcome.get_result()
     setattr(item, f"rep_{rep.when}", rep)
 
+
 @pytest.fixture(scope="session")
-def api_request_context(playwright: Playwright) -> 'AllureLoggingAPIRequestContext':
+def api_request_context(playwright: Playwright) -> "AllureLoggingAPIRequestContext":
     """
     Fixture that creates a new APIRequestContext for API tests and wraps it with Allure logging.
     """
@@ -31,22 +38,35 @@ class AllureLoggingAPIRequestContext:
     A wrapper around Playwright's APIRequestContext that automatically logs
     request and response details to Allure report steps.
     """
+
     def __init__(self, request_context: APIRequestContext):
         self._request_context = request_context
 
     def _log_request(self, method: str, url: str, **kwargs):
         with allure.step(f"API Request: {method} {url}"):
-            allure.attach(f"Method: {method}\nURL: {url}", name="Request Details", attachment_type=allure.attachment_type.TEXT)
-            if 'headers' in kwargs and kwargs['headers']:
-                allure.attach(str(kwargs['headers']), name="Request Headers", attachment_type=allure.attachment_type.TEXT)
-            if 'data' in kwargs and kwargs['data']:
-                allure.attach(str(kwargs['data']), name="Request Body (form data)", attachment_type=allure.attachment_type.TEXT)
-            if 'json' in kwargs and kwargs['json']:
-                allure.attach(str(kwargs['json']), name="Request Body (JSON)", attachment_type=allure.attachment_type.JSON)
+            allure.attach(
+                f"Method: {method}\nURL: {url}", name="Request Details", attachment_type=allure.attachment_type.TEXT
+            )
+            if kwargs.get("headers"):
+                allure.attach(
+                    str(kwargs["headers"]), name="Request Headers", attachment_type=allure.attachment_type.TEXT
+                )
+            if kwargs.get("data"):
+                allure.attach(
+                    str(kwargs["data"]), name="Request Body (form data)", attachment_type=allure.attachment_type.TEXT
+                )
+            if kwargs.get("json"):
+                allure.attach(
+                    str(kwargs["json"]), name="Request Body (JSON)", attachment_type=allure.attachment_type.JSON
+                )
 
     def _log_response(self, response: Response):
         with allure.step(f"API Response: {response.status} {response.status_text}"):
-            allure.attach(f"Status: {response.status} {response.status_text}", name="Response Status", attachment_type=allure.attachment_type.TEXT)
+            allure.attach(
+                f"Status: {response.status} {response.status_text}",
+                name="Response Status",
+                attachment_type=allure.attachment_type.TEXT,
+            )
             allure.attach(str(response.headers), name="Response Headers", attachment_type=allure.attachment_type.TEXT)
             try:
                 # Try to attach as JSON if possible, otherwise as plain text
@@ -74,4 +94,5 @@ class AllureLoggingAPIRequestContext:
 
     # Delegate any other methods not explicitly overridden to the underlying APIRequestContext
     def __getattr__(self, name):
+
         return getattr(self._request_context, name)

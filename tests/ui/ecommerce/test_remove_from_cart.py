@@ -1,15 +1,18 @@
-import pytest
-from playwright.sync_api import expect
 import allure
-from POM.pages.login.login_page import LoginPage
+import pytest
+
+from data.test_data import test_products
 from POM.pages.cart.cart_page import CartPage
 from POM.pages.home.home_page import HomePage
-from data.test_data import test_products
+from POM.pages.login.login_page import LoginPage
 from super_secure.credentials.login_credentials import correct
+
 
 @pytest.mark.regression
 @allure.title("E-commerce: Remove Product from Cart")
-@allure.description("This test verifies the full process of removing a product from the shopping cart after it has been added.")
+@allure.description(
+    "This test verifies the full process of removing a product from the shopping cart after it has been added."
+)
 @allure.feature("Shopping Cart")
 @allure.story("As a logged-in user, I can remove a product from my cart")
 def test_remove_phone_from_cart(browser):
@@ -24,7 +27,7 @@ def test_remove_phone_from_cart(browser):
         product_to_test = test_products[0]
 
     with allure.step(f"Log in as user: {correct['email']}"):
-        login_page.login(username=correct['email'], password=correct['password'])
+        login_page.login(username=correct["email"], password=correct["password"])
 
     with allure.step(f"Add product '{product_to_test['name']}' to the cart"):
         home_page.add_product_to_cart(product_to_test["name"])

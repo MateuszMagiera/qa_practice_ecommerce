@@ -12,7 +12,6 @@ Usage:
 """
 
 import json
-from typing import Optional
 
 import allure
 from playwright.sync_api import Page
@@ -33,23 +32,21 @@ def _format_violation(violation: dict) -> str:
     for node in violation.get("nodes", []):
         target = ", ".join(str(t) for t in node.get("target", []))
         failure = "; ".join(
-            msg.get("message", "")
-            for msg in node.get("any", []) + node.get("all", []) + node.get("none", [])
+            msg.get("message", "") for msg in node.get("any", []) + node.get("all", []) + node.get("none", [])
         )
         nodes_info.append(f"    → {target}\n      {failure}")
 
     return (
         f"[{violation['impact'].upper()}] {violation['id']}: {violation['description']}\n"
         f"  Help: {violation['helpUrl']}\n"
-        f"  Affected nodes ({len(violation.get('nodes', []))}):\n"
-        + "\n".join(nodes_info)
+        f"  Affected nodes ({len(violation.get('nodes', []))}):\n" + "\n".join(nodes_info)
     )
 
 
 def run_axe_audit(
     page: Page,
     page_name: str = "Page",
-    tags: Optional[list[str]] = None,
+    tags: list[str] | None = None,
 ) -> list[dict]:
     """
     Run an axe-core accessibility audit on the current page.
@@ -105,4 +102,3 @@ def run_axe_audit(
 def filter_by_impact(violations: list[dict], levels: tuple[str, ...] = ("critical",)) -> list[dict]:
     """Filter violations by impact level(s). Default: critical only."""
     return [v for v in violations if v.get("impact") in levels]
-

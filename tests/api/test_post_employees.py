@@ -1,8 +1,11 @@
 import allure
 import pytest
 from playwright.sync_api import APIRequestContext, expect
+
 from config import API_BASE_URL
+
 EMPLOYEES_ENDPOINT = "/api/v1/employees"
+
 
 @pytest.mark.regression
 @allure.feature("API: Employees POST")
@@ -18,14 +21,11 @@ class TestPostEmployees:
             "firstName": "John",
             "lastName": "Doe",
             "email": "john.doe@example.com",
-            "dob": "1990-01-15"
+            "dob": "1990-01-15",
         }
 
         with allure.step(f"Send POST request to {EMPLOYEES_ENDPOINT}"):
-            response = api_request_context.post(
-                f"{API_BASE_URL}{EMPLOYEES_ENDPOINT}",
-                data=new_employee_data
-            )
+            response = api_request_context.post(f"{API_BASE_URL}{EMPLOYEES_ENDPOINT}", data=new_employee_data)
 
         with allure.step("Verify the response"):
             # This API returns 201 Created with an empty body.
@@ -39,19 +39,32 @@ class TestPostEmployees:
 
             employees_list = get_response.json()
             # Check if any employee in the list matches the one we created
-            assert any(emp['firstName'] == new_employee_data['firstName'] and emp['lastName'] == new_employee_data['lastName'] for emp in employees_list), \
-                "Newly created employee not found in the employees list"
+            assert any(
+                emp["firstName"] == new_employee_data["firstName"] and emp["lastName"] == new_employee_data["lastName"]
+                for emp in employees_list
+            ), "Newly created employee not found in the employees list"
 
-    @pytest.mark.parametrize("invalid_payload, expected_error_message_part", [
-        ({"lastName": "Doe", "email": "jane.doe@example.com", "dob": "1991-02-16"}, "The first name is mandatory!"),
-        ({"firstName": "Jane", "lastName": "Doe", "email": "not-an-email", "dob": "1991-02-16"}, "must be a well-formed email address"),
-        ({"firstName": "Jane", "lastName": "Doe", "email": "jane.doe@example.com", "dob": "invalid-date"}, "Cannot deserialize value of type"),
-        ({}, "The first name is mandatory!") # Test with empty payload
-    ])
+    @pytest.mark.parametrize(
+        "invalid_payload, expected_error_message_part",
+        [
+            ({"lastName": "Doe", "email": "jane.doe@example.com", "dob": "1991-02-16"}, "The first name is mandatory!"),
+            (
+                {"firstName": "Jane", "lastName": "Doe", "email": "not-an-email", "dob": "1991-02-16"},
+                "must be a well-formed email address",
+            ),
+            (
+                {"firstName": "Jane", "lastName": "Doe", "email": "jane.doe@example.com", "dob": "invalid-date"},
+                "Cannot deserialize value of type",
+            ),
+            ({}, "The first name is mandatory!"),  # Test with empty payload
+        ],
+    )
     @allure.story("Create Employees - Negative Scenarios")
     @allure.title("Test POST with invalid data: {expected_error_message_part}")
     @allure.description("This test verifies that the API returns a 400 Bad Request for various invalid payloads.")
-    def test_create_employee_with_invalid_data(self, api_request_context: APIRequestContext, invalid_payload: dict, expected_error_message_part: str):
+    def test_create_employee_with_invalid_data(
+        self, api_request_context: APIRequestContext, invalid_payload: dict, expected_error_message_part: str
+    ):
         """
         Tests that the API correctly handles various invalid data inputs.
         """
@@ -70,5 +83,6 @@ class TestPostEmployees:
             for error in response_json.get("errors", []):
                 all_messages += " " + error.get("defaultMessage", "")
 
-            assert expected_error_message_part in all_messages, \
+            assert expected_error_message_part in all_messages, (
                 f"Expected '{expected_error_message_part}' not found in response: {all_messages}"
+            )

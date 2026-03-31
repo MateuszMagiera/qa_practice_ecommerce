@@ -1,0 +1,35 @@
+target-version = "py312"
+line-length = 120
+
+# Lint only project source — skip generated/vendored files.
+include = [
+    "tests/**/*.py",
+    "POM/**/*.py",
+    "locators/**/*.py",
+    "utils/**/*.py",
+    "data/**/*.py",
+    "super_secure/**/*.py",
+    "config.py",
+]
+
+[lint]
+select = [
+    "F",     # Pyflakes — unused imports, undefined names
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "I",     # isort — import ordering
+    "UP",    # pyupgrade — modernize syntax for target Python version
+    "B",     # flake8-bugbear — common bug patterns
+    "SIM",   # flake8-simplify — simplifiable code
+    "RUF",   # Ruff-specific rules
+]
+ignore = [
+    "E501",  # line too long — handled by formatter
+]
+
+[lint.isort]
+known-first-party = ["POM", "locators", "data", "utils", "super_secure", "config"]
+
+[format]
+quote-style = "double"
+indent-style = "space"

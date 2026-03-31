@@ -1,8 +1,8 @@
 import os
 from datetime import datetime
 
-import pytest
 import allure
+import pytest
 from playwright.sync_api import expect
 
 SCREENSHOTS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "screenshots")
@@ -26,7 +26,7 @@ def browser(browser):
     page/context created via browser.new_page() or browser.new_context()
     gets consistent viewport and timeout defaults.
 
-    This is critical for CI where headless browsers default to 1280×720
+    This is critical for CI where headless browsers default to 1280x720
     and the external sites can be slow to respond.
     """
     _original_new_page = browser.new_page
@@ -73,8 +73,8 @@ def capture_screenshot_on_failure(request, browser):
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         test_name = request.node.name
 
-        for i, context in enumerate(browser.contexts):
-            for j, page in enumerate(context.pages):
+        for _i, context in enumerate(browser.contexts):
+            for _j, page in enumerate(context.pages):
                 try:
                     screenshot_bytes = page.screenshot(full_page=True)
 

@@ -13,12 +13,13 @@ Strategy:
       for informational purposes.
 """
 
-import pytest
 import allure
+import pytest
+
+from config import BASE_URL
 from POM.pages.login.login_page import LoginPage
 from super_secure.credentials.login_credentials import correct
-from config import BASE_URL
-from utils.accessibility import run_axe_audit, filter_by_impact
+from utils.accessibility import filter_by_impact, run_axe_audit
 
 FAIL_ON_IMPACT = ("critical", "serious")
 
@@ -31,15 +32,15 @@ FAIL_ON_IMPACT = ("critical", "serious")
 # ──────────────────────────────────────────────────────────────────────
 KNOWN_VIOLATIONS: dict[str, set[str]] = {
     "Login Page": {
-        "button-name",      # Navbar toggle button has no accessible name
-        "color-contrast",   # Low-contrast placeholder text in form inputs
-        "html-has-lang",    # <html> element missing lang attribute
+        "button-name",  # Navbar toggle button has no accessible name
+        "color-contrast",  # Low-contrast placeholder text in form inputs
+        "html-has-lang",  # <html> element missing lang attribute
     },
     "Shopping Page": {
-        "button-name",      # Navbar toggle + cart buttons have no accessible name
-        "color-contrast",   # Low-contrast text on product cards
-        "html-has-lang",    # <html> element missing lang attribute
-        "image-alt",        # Product images have no alt text
+        "button-name",  # Navbar toggle + cart buttons have no accessible name
+        "color-contrast",  # Low-contrast text on product cards
+        "html-has-lang",  # <html> element missing lang attribute
+        "image-alt",  # Product images have no alt text
     },
 }
 
@@ -54,7 +55,6 @@ def _get_new_violations(violations: list[dict], page_name: str) -> list[dict]:
 @pytest.mark.a11y
 @allure.feature("Accessibility (WCAG)")
 class TestAccessibility:
-
     @allure.story("Login Page Audit")
     @allure.title("a11y: Login page meets WCAG 2.1 AA")
     @allure.description(
@@ -86,7 +86,7 @@ class TestAccessibility:
         login_page = LoginPage(page)
 
         with allure.step(f"Log in as user: {correct['email']}"):
-            login_page.login(username=correct['email'], password=correct['password'])
+            login_page.login(username=correct["email"], password=correct["password"])
 
         violations = run_axe_audit(page, page_name="Shopping Page")
         blocking = filter_by_impact(violations, levels=FAIL_ON_IMPACT)
@@ -96,5 +96,3 @@ class TestAccessibility:
             f"Found {len(new_violations)} NEW critical/serious a11y violation(s) on Shopping Page:\n"
             + "\n".join(f"  - [{v['impact']}] {v['id']}: {v['description']}" for v in new_violations)
         )
-
-

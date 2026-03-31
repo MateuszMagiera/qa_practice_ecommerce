@@ -6,7 +6,6 @@ class TestStep:
         print(f"[START STEP] : {self.step_name}")
         return self
 
-
     def __exit__(self, exc_type, exc_val, exc_tb):
         # ERROR SCENARIO
         # Code executed AFTER leaving block or when error was encountered.

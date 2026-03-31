@@ -11,7 +11,7 @@ import json
 import pathlib
 
 import allure
-from jsonschema import validate, ValidationError, RefResolver
+from jsonschema import RefResolver, ValidationError, validate
 
 # Resolve the schemas directory once — works regardless of CWD.
 _SCHEMAS_DIR = pathlib.Path(__file__).resolve().parent.parent / "data" / "schemas"
@@ -20,7 +20,7 @@ _SCHEMAS_DIR = pathlib.Path(__file__).resolve().parent.parent / "data" / "schema
 def _load_schema(schema_filename: str) -> dict:
     """Load a JSON Schema file from data/schemas/."""
     schema_path = _SCHEMAS_DIR / schema_filename
-    with open(schema_path, "r", encoding="utf-8") as f:
+    with open(schema_path, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -59,4 +59,3 @@ def assert_valid_schema(instance, schema_filename: str) -> None:
                 f"  Path:    {' → '.join(str(p) for p in exc.absolute_path) or '(root)'}\n"
                 f"  Error:   {exc.message}\n"
             ) from None
-
