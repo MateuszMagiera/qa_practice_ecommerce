@@ -64,7 +64,7 @@ class TestAccessibility:
     def test_login_page_accessibility(self, page):
         """Audit the login page for accessibility violations."""
         with allure.step(f"Navigate to login page: {BASE_URL}/auth_ecommerce.html"):
-            page.goto(f"{BASE_URL}/auth_ecommerce.html")
+            page.goto(f"{BASE_URL}/auth_ecommerce.html", wait_until="domcontentloaded")
 
         violations = run_axe_audit(page, page_name="Login Page")
         blocking = filter_by_impact(violations, levels=FAIL_ON_IMPACT)

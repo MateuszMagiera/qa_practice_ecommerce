@@ -1,6 +1,5 @@
-def construct_add_to_cart_button_locator(text):
-    locator = f"//span[text()='{text}']//parent::div//div//button[text()='ADD TO CART']"
-    return locator
+def construct_add_to_cart_button_locator(page, text):
+    return page.locator(".shop-item").filter(has_text=text).locator("button:visible", has_text="ADD TO CART")
 
 
 def calculate_total_price(products):

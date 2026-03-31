@@ -9,8 +9,9 @@ class HomePage:
 
     def add_product_to_cart(self, product_name: str):
         """Finds a product by name on the home page and clicks its 'ADD TO CART' button."""
-        add_button_locator = construct_add_to_cart_button_locator(product_name)
-        self.page.click(add_button_locator)
+        add_button_locator = construct_add_to_cart_button_locator(self.page, product_name)
+        add_button_locator.scroll_into_view_if_needed()
+        add_button_locator.click()
 
     def add_all_phones_to_cart(self, products_list: list, product_locator: str):
         """Iterates through a list of products and adds each one to the cart."""
