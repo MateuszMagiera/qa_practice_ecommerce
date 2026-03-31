@@ -24,4 +24,4 @@ def test_login_successfully(browser):
         login.login(username=correct["email"], password=correct["password"])
 
     with allure.step("Verify that the shopping cart page is displayed"):
-        expect(page.get_by_text("SHOPPING CART")).to_be_visible()
+        expect(page.locator(".shop-item-button").first).to_be_visible()

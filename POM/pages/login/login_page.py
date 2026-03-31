@@ -11,3 +11,4 @@ class LoginPage:
         self.page.fill(login_page.password, password)
         self.page.click(login_page.submit_button)
         self.page.wait_for_load_state("load")
+        self.page.locator(".shop-item-button").first.wait_for(state="visible")
