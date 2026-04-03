@@ -67,7 +67,7 @@ class TestGetAPI:
                     f"Expected lastName to be a string, but got {type(item['lastName'])}"
                 )
                 assert isinstance(item["email"], str), f"Expected email to be a string, but got {type(item['email'])}"
-                assert isinstance(item["dob"], str), f"Expected email to be a string, but got {type(item['dob'])}"
+                assert isinstance(item["dob"], str), f"Expected dob to be a string, but got {type(item['dob'])}"
                 assert "@" in item["email"], f"Expected email to contain '@', but got {item['email']}'"
                 assert "-" in item["dob"], f"Expected dob to contain '-', but got {item['dob']}'"
 

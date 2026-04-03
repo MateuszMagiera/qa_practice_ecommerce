@@ -8,7 +8,6 @@ from playwright.sync_api import (  # noqa: E402
     APIRequestContext,
     APIResponse,
     Playwright,
-    Response,
 )
 
 
@@ -60,7 +59,7 @@ class AllureLoggingAPIRequestContext:
                     str(kwargs["json"]), name="Request Body (JSON)", attachment_type=allure.attachment_type.JSON
                 )
 
-    def _log_response(self, response: Response):
+    def _log_response(self, response: APIResponse):
         with allure.step(f"API Response: {response.status} {response.status_text}"):
             allure.attach(
                 f"Status: {response.status} {response.status_text}",
