@@ -1,6 +1,6 @@
 ﻿# 🛒 E-commerce Test Automation Framework
 
-An end-to-end test automation framework covering **UI**, **REST API**, and **GraphQL** testing for the [QA Practice](https://qa-practice.netlify.app/) e-commerce application.
+An end-to-end test automation framework covering **UI**, **REST API**, and **GraphQL** testing for the [QA Practice](https://qa-practice.razvanvancea.ro/) e-commerce application.
 
 📊 **Live Allure Report →** [mateuszmagiera.github.io/qa_practice_ecommerce](https://mateuszmagiera.github.io/qa_practice_ecommerce/)
 
@@ -93,7 +93,7 @@ INCORRECT_EMAIL=wrong@example.com
 INCORRECT_PASSWORD=wrong_password
 
 # URLs (defaults work for local Docker setup)
-BASE_URL=https://qa-practice.netlify.app
+BASE_URL=https://qa-practice.razvanvancea.ro
 API_BASE_URL=http://127.0.0.1:8887
 GRAPHQL_URL=http://127.0.0.1:5000/graphql
 ```

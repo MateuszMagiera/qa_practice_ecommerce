@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from data.test_data import test_products
 from POM.pages.cart.cart_page import CartPage
@@ -7,6 +8,7 @@ from POM.pages.login.login_page import LoginPage
 from super_secure.credentials.login_credentials import correct
 
 
+@pytest.mark.xfail(reason="Intentional failure — demonstrates screenshot-on-failure mechanism")
 @allure.title("E-commerce: Failed Screenshot Test")
 @allure.description("This test intentionally fails to demonstrate automatic screenshot capture on failure.")
 @allure.feature("Shopping Cart")

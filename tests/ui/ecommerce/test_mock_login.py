@@ -43,7 +43,7 @@ class TestLoginMock:
             )
 
         with allure.step(f"Attempt login with correct credentials: {correct['email']}"):
-            login_page.login(username=correct["email"], password=correct["password"])
+            login_page.attempt_login(username=correct["email"], password=correct["password"])
 
         with allure.step("Verify error message is displayed"):
             expect(page.get_by_text(internal_server_error_message)).to_be_visible()

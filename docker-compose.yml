@@ -32,7 +32,7 @@ services:
         condition: service_healthy
     environment:
       # URLs point to the Docker service names (resolved via internal DNS)
-      - BASE_URL=https://qa-practice.netlify.app
+      - BASE_URL=https://qa-practice.razvanvancea.ro
       - API_BASE_URL=http://api:8081
       - GRAPHQL_URL=http://graphql:5000/graphql
       # Test credentials (override in .env or CI secrets)

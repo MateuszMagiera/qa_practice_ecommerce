@@ -27,7 +27,7 @@ def test_login_with_invalid_credentials(browser, email, password):
         login = LoginPage(page)
 
     with allure.step(f"Attempt login with email: {email}"):
-        login.login(username=email, password=password)
+        login.attempt_login(username=email, password=password)
 
     with allure.step("Verify that the error message is displayed"):
         expect(page.get_by_text(incorrect_credentials_error_message)).to_be_visible()
